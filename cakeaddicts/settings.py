@@ -106,12 +106,15 @@ STATIC_URL = 'static/'
 MEDIA_URL = 'uploadMedia/'
 # MEDIA_ROOT =  os.path.join(BASE_DIR, '/media/images') 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images')
-
-STATICFILES_DIRS = ( 
-    'cakestore',
-    # os.path.join(BASE_DIR, 'static'),
-    )
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_DIRS = ( 
+#     'cakestore',
+#     # os.path.join(BASE_DIR, 'static'),
+#     )
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'images'),  # Root-level images directory
+    os.path.join(BASE_DIR, 'media'),   # Root-level media directory
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
