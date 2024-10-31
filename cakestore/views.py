@@ -1,20 +1,20 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from .forms import RegisterUserForm
-from .models import Item, Cart, Category, cartItem, Order, orderItem
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.template import loader
-from django.urls import reverse
-from django.db import models
-from django.db.models import Sum
-from django.views.generic.base import TemplateView
 import stripe
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
-from django.conf import settings
+from django.db import models
+from django.db.models import Sum
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.template import loader
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views.generic.base import TemplateView
+
+from .forms import RegisterUserForm
+from .models import Cart, Category, Item, Order, cartItem, orderItem
 
 
 def showHome(request):

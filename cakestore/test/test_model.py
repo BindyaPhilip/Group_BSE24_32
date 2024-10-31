@@ -1,7 +1,8 @@
 import pytest
-from django.urls import reverse
 from django.contrib.auth.models import User
-from cakestore.models import Category, Item, Cart, cartItem, Order, orderItem
+from django.urls import reverse
+
+from cakestore.models import Cart, Category, Item, Order, cartItem, orderItem
 
 
 @pytest.mark.django_db  # Use this marker to allow database access for the test

@@ -1,9 +1,10 @@
 # cakestore/tests/test_integration.py
 
 import pytest
-from django.urls import reverse
 from django.contrib.auth.models import User
-from cakestore.models import Category, Item, Cart
+from django.urls import reverse
+
+from cakestore.models import Cart, Category, Item
 
 
 @pytest.mark.django_db  # This decorator allows the test to access the database

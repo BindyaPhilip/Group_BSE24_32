@@ -1,10 +1,11 @@
 import pytest
-from django.urls import reverse
 from django.contrib.auth.models import User
-from django.test import Client
-from cakestore.models import Item, Cart, Category, Order, orderItem
-from django.db.models import Sum
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models import Sum
+from django.test import Client
+from django.urls import reverse
+
+from cakestore.models import Cart, Category, Item, Order, orderItem
 
 
 # Use the pytest fixture to create a test client for making HTTP requests

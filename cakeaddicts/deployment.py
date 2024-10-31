@@ -1,7 +1,7 @@
 import os
+
 from .settings import *
 from .settings import BASE_DIR
-
 
 ALLOWED_HOSTS = [os.environ["WEBSITE_HOSTNAME"]]
 # this is the secret key that will be used in azure
