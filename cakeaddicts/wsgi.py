@@ -20,3 +20,19 @@ settings_module = (
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
 application = get_wsgi_application()
+
+
+# import os
+
+# from django.core.wsgi import get_wsgi_application
+
+# # Determine which settings file to use based on DJANGO_ENV
+# settings_module = (
+#     "cakeaddicts.deployment"  # Production settings
+#     if os.environ.get("DJANGO_ENV") == "production"
+#     else "cakeaddicts.production"  # Staging settings
+# )
+
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
+
+# application = get_wsgi_application()

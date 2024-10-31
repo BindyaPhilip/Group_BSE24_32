@@ -8,3 +8,6 @@ exclude = '\.venv|env|migrations'  # Excludes specific directories from formatti
 profile = "black"  # Matches Black's style
 line_length = 88  # Sets the maximum line length for isort
 known_first_party = ["cakeaddicts"]  # Replace with your actual Django project name
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "cakeaddicts.settings"

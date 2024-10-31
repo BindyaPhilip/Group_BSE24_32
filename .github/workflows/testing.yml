@@ -1,0 +1,40 @@
+# .github/workflows/code-quality.yml
+name: Code Quality
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black isort 
+      - name: Run Black
+        run: black --check .
+      - name: Run isort
+        run: isort --check-only .
+      # - name: Run Flake8
+      #   run: flake8
+      # - name: Run test
+      #   run: pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest  # Ensure pytest is installed
+          pip install django 
+          pip install -r requirements.txt
+          pip install pytest-django
+
+
+      - name: Run Tests
+        env:
+            DJANGO_SETTINGS_MODULE: cakeaddicts.settings
+        run: |
+            python -m pytest
