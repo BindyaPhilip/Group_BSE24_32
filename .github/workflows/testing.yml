@@ -1,5 +1,5 @@
 # .github/workflows/code-quality.yml
-name: Code Quality
+name: Code Quality, Unit and Integration Testing
 
 on: [push, pull_request]
 
@@ -22,3 +22,5 @@ jobs:
         run: isort --check-only .
     #   - name: Run Flake8
     #     run: flake8
+      - name: Run tests
+        run: pytest
