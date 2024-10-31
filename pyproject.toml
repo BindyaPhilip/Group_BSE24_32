@@ -1,0 +1,10 @@
+# pyproject.toml
+
+[tool.black]
+line-length = 88  # Sets the maximum line length for Black
+exclude = '\.venv|env|migrations'  # Excludes specific directories from formatting
+
+[tool.isort]
+profile = "black"  # Matches Black's style
+line_length = 88  # Sets the maximum line length for isort
+known_first_party = ["cakeaddicts"]  # Replace with your actual Django project name
