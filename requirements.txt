@@ -2,7 +2,7 @@ asgiref==3.8.1
 certifi==2024.8.30
 charset-normalizer==3.4.0
 colorama==0.4.6
-Django==4.2.5 
+django>=3.0,<4.0
 idna==3.10
 iniconfig==2.0.0
 packaging==24.1
