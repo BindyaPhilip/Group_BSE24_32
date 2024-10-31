@@ -40,5 +40,10 @@ jobs:
         run: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
-      - name: Run tests
-        run: pytest cakestore/test
+      - name: Run Tests
+        env:
+          DJANGO_SETTINGS_MODULE: cakeaddicts.settings  # Ensure this points to your settings module
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+              pytest cakestore/test  # Ensure this points to your test folder path
+          
