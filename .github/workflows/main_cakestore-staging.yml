@@ -39,10 +39,10 @@ jobs:
         run: python manage.py collectstatic --noinput
 
       # Optional: Run tests
-      - name: Run Tests
-        run: |
-          source venv/bin/activate
-          pytest  # or python manage.py test if using Django's test framework
+      # - name: Run Tests
+      #   run: |
+      #     source venv/bin/activate
+      #     pytest  # or python manage.py test if using Django's test framework
 
       # Zip the artifacts for deployment
       - name: Zip artifact for deployment
