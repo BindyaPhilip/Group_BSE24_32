@@ -15,31 +15,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code from the repository
       - uses: actions/checkout@v4
 
+      # Set up the required Python version
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      # Create and activate virtual environment
       - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
+      # Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
-      
 
+      # Collect static files for Django
       - name: Collect static files
-        run: | 
-          python manage.py collectstatic --noinput
+        run: python manage.py collectstatic --noinput
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      # Optional: Run tests
+      - name: Run Tests
+        run: |
+          source venv/bin/activate
+          pytest  # or python manage.py test if using Django's test framework
 
+      # Zip the artifacts for deployment
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
+      # Upload artifact for deployment
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
@@ -55,18 +64,20 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write  # This is required for requesting the JWT
 
     steps:
+      # Download the artifact created in the build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
+      # Unzip the artifact
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
+      # Log in to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -74,10 +85,32 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1D8C5082CE234E82BCEAA9F849289479 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1B84776906F148A59B296A034CA30A19 }}
 
-      - name: 'Deploy to Azure Web App'
+      # Deploy to Azure Web App
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'Cakestore-Staging'
           slot-name: 'Production'
+
+      # Log Deployment Event to Azure Monitor
+      - name: Log Deployment Event to Azure Monitor
+        env:
+          WORKSPACE_ID: ${{ secrets.AZURE_MONITOR_WORKSPACE_ID }}
+          SHARED_KEY: ${{ secrets.AZURE_MONITOR_SHARED_KEY }}
+        run: |
+          echo "Logging deployment event to Azure Monitor."
+          TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%SZ")
+          JSON_PAYLOAD=$(jq -n \
+            --arg timestamp "$TIMESTAMP" \
+            --arg message "Deployment to Production started" \
+            '{"timestamp": $timestamp, "message": $message}')
           
+          # Send to Azure Monitor
+          curl -X POST \
+            -H "Authorization: SharedKey $WORKSPACE_ID:$SHARED_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Log-Type: DeploymentEvents" \
+            -H "x-ms-date: $TIMESTAMP" \
+            -d "$JSON_PAYLOAD" \
+            "https://$WORKSPACE_ID.ods.opinsights.azure.com/api/logs?api-version=2016-04-01"

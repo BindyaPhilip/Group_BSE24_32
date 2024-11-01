@@ -12,6 +12,20 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+import sys
+# settings.py
+
+from applicationinsights import TelemetryClient
+
+APPLICATION_INSIGHTS_KEY = os.getenv('APPLICATION_INSIGHTS_KEY','5176e78f-253f-4613-9a53-9285287185d2')
+
+telemetry_client = TelemetryClient(APPLICATION_INSIGHTS_KEY)
+if 'pytest' in sys.modules:
+    # Mock the telemetry client or skip this setup
+    telemetry_client = None
+else:
+    telemetry_client = TelemetryClient(APPLICATION_INSIGHTS_KEY)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
