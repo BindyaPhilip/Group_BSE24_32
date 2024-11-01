@@ -18,14 +18,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django_prometheus import views as prom_views
+#from django_prometheus import views as prom_views
+#from django_prometheus import middleware, exports
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("cakestore.urls")),
     path("cakestore/", include("django.contrib.auth.urls")),
     path("cakestore/", include("cakestore.urls")),
-    path('metrics/', prom_views.export_to_wsgi),
+    #path('metrics/', prom_views.export_to_wsgi),
+    #path('metrics/', exports.ExportView.as_view(), name='prometheus-metrics'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urls.py
