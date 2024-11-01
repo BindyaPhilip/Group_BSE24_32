@@ -93,24 +93,19 @@ jobs:
           app-name: 'Cakestore-Staging'
           slot-name: 'Production'
 
-      # Log Deployment Event to Azure Monitor
-      - name: Log Deployment Event to Azure Monitor
+      # Log Deployment Event to Application Insights
+      - name: Log Deployment Event to Application Insights
         env:
-          WORKSPACE_ID: ${{ secrets.AZURE_MONITOR_WORKSPACE_ID }}
-          SHARED_KEY: ${{ secrets.AZURE_MONITOR_SHARED_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
         run: |
-          echo "Logging deployment event to Azure Monitor."
+          echo "Logging deployment event to Application Insights."
           TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%SZ")
           JSON_PAYLOAD=$(jq -n \
             --arg timestamp "$TIMESTAMP" \
             --arg message "Deployment to Production started" \
-            '{"timestamp": $timestamp, "message": $message}')
-          
-          # Send to Azure Monitor
-          curl -X POST \
-            -H "Authorization: SharedKey $WORKSPACE_ID:$SHARED_KEY" \
-            -H "Content-Type: application/json" \
-            -H "Log-Type: DeploymentEvents" \
-            -H "x-ms-date: $TIMESTAMP" \
-            -d "$JSON_PAYLOAD" \
-            "https://$WORKSPACE_ID.ods.opinsights.azure.com/api/logs?api-version=2016-04-01"
+            '{"name": "Deployment Event", "time": $timestamp, "iKey": $INSTRUMENTATION_KEY, "data": {"baseType": "EventData", "baseData": {"name": "Deployment to Production started", "properties": {}}}}')
+
+          # Send to Application Insights
+          curl -X POST "https://dc.services.visualstudio.com/v2/track" \
+          -H "Content-Type: application/json" \
+          -d "$JSON_PAYLOAD"
