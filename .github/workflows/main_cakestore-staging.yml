@@ -103,7 +103,9 @@ jobs:
           JSON_PAYLOAD=$(jq -n \
             --arg timestamp "$TIMESTAMP" \
             --arg message "Deployment to Production started" \
-            '{"name": "Deployment Event", "time": $timestamp, "iKey": $INSTRUMENTATION_KEY, "data": {"baseType": "EventData", "baseData": {"name": "Deployment to Production started", "properties": {}}}}')
+            --arg instrumentation_key "$INSTRUMENTATION_KEY" \
+            '{"name": "Deployment Event", "time": $timestamp, "iKey": $instrumentation_key, "data": {"baseType": "EventData", "baseData": {"name": $message, "properties": {}}}}')
+
 
           # Send to Application Insights
           curl -X POST "https://dc.services.visualstudio.com/v2/track" \
