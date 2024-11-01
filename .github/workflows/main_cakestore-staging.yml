@@ -96,7 +96,7 @@ jobs:
       # Log Deployment Event to Application Insights
       - name: Log Deployment Event to Application Insights
         env:
-          INSTRUMENTATION_KEY: ${{ secrets.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.INSTRUMENTATION_KEY }}
         run: |
           echo "Logging deployment event to Application Insights."
           TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%SZ")
